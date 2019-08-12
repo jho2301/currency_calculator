@@ -7,7 +7,7 @@
     </div>
     <div class="highlight">
     </div>
-    <div class="update-text">업데이트 : {{updatedDate}}</div>
+    <div class="update-text">환율 업데이트 : {{updatedDate}}</div>
   </div>
 </template>
 
@@ -29,16 +29,18 @@ export default {
     }
   },
   methods: {
-     getJSON : function(){ 
-     this.axios.get('https://www.floatrates.com/daily/usd.json')
-      .then((res)=>{
-        this.currencyRate = res.data["krw"].rate //환율
-        this.updatedDate = res.data["krw"].date //날짜
-      })
-      .catch((err)=>{
-        console.log(err)
-      })
-    }
+    getJSON : function(){ 
+      this.axios.get('https://www.floatrates.com/daily/usd.json')
+        .then((res)=>{
+          this.currencyRate = res.data["krw"].rate //환율
+          this.updatedDate = res.data["krw"].date //날짜
+        })
+        .catch((err)=>{
+          console.log(err)
+        })
+    },
+  },
+  computed: {
   },
   created(){
     this.getJSON();
@@ -49,6 +51,10 @@ export default {
 <style lnag="scss">
 @import url('https://fonts.googleapis.com/css?family=Black+Han+Sans|Noto+Sans+KR:300,400&display=swap');
 
+* {
+  font-family:'Noto Sans KR';
+}
+
 html body {
   display: flex;
   justify-content: center;
@@ -56,6 +62,7 @@ html body {
   height: 100vh;
   background: rgb(244, 246, 252);
 }
+
 
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

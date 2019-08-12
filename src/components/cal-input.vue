@@ -40,16 +40,6 @@ export default {
     rate: Number
   },
   methods: {
-     getJSON : function(){ 
-     this.axios.get('https://www.floatrates.com/daily/usd.json')
-      .then((res)=>{
-        this.currencyRate = res.data["krw"].rate //환율
-        this.updatedDate = res.data["krw"].date //날짜
-      })
-      .catch((err)=>{
-        console.log(err)
-      })
-    },
     addComma(num) {
       var regexp = /\B(?=(\d{3})+(?!\d))/g;
       return num.toString().replace(regexp, ',');
@@ -60,9 +50,6 @@ export default {
       return this.addComma(Math.floor(this.input*this.rate*this.quantity));
     }
   },
-  created(){
-    this.getJSON();
-  }
 }
 </script>
 
