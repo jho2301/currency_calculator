@@ -7,9 +7,9 @@
     </div>
     <div class="input-row">
       <span class="symbol">$</span>
-      <input type="text" name="" class="foreign-currency-input">
-      <input type="number" value="1" min="0" max="99" name="" class="quantity-input">
-      <span class="individual-krw">3,000원</span>
+      <input type="text" class="foreign-currency-input" v-model="input">
+      <input type="number" v-model="quantity" value="1" min="0" max="99" name="" class="quantity-input">
+      <span class="individual-krw">{{individualKrw}}원</span>
     </div>
     <div class="add-btn">
       <font-awesome-icon class="plus-text" icon="plus" /> <span class="plus-text"> 추가하기</span>
@@ -28,6 +28,41 @@
 
 <script>
 export default {
+  data(){
+    return {
+      input: '',
+      quantity: 1,
+      currencyRate: 0,
+      updatedDate: ''
+    }
+  },
+  props: {
+    rate: Number
+  },
+  methods: {
+     getJSON : function(){ 
+     this.axios.get('https://www.floatrates.com/daily/usd.json')
+      .then((res)=>{
+        this.currencyRate = res.data["krw"].rate //환율
+        this.updatedDate = res.data["krw"].date //날짜
+      })
+      .catch((err)=>{
+        console.log(err)
+      })
+    },
+    addComma(num) {
+      var regexp = /\B(?=(\d{3})+(?!\d))/g;
+      return num.toString().replace(regexp, ',');
+    }
+  },
+  computed: {
+    individualKrw(){
+      return this.addComma(Math.floor(this.input*this.rate*this.quantity));
+    }
+  },
+  created(){
+    this.getJSON();
+  }
 }
 </script>
 
