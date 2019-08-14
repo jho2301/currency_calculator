@@ -2,11 +2,12 @@
   <div id="app">
     <v-header class="header col-12"></v-header>
     <div class="section">
-      <v-input class="input col-9"></v-input>
+      <v-input class="input col-9" :rate="currencyRate"></v-input>
       <v-result class="result col-3"></v-result>
     </div>
     <div class="highlight">
     </div>
+    <div class="update-text">환율 업데이트 : {{updatedDate}}</div>
   </div>
 </template>
 
@@ -20,11 +21,39 @@ export default {
     vHeader,
     vInput,
     vResult,
-  }
+  },
+  data(){
+    return {
+      currencyRate: 0,
+      updatedDate: ''
+    }
+  },
+  methods: {
+    getJSON : function(){ 
+      this.axios.get('https://www.floatrates.com/daily/usd.json')
+        .then((res)=>{
+          this.currencyRate = res.data["krw"].rate //환율
+          this.updatedDate = res.data["krw"].date //날짜
+        })
+        .catch((err)=>{
+          console.log(err)
+        })
+    },
+  },
+  computed: {
+  },
+  created(){
+    this.getJSON();
+  },
 }
 </script>
+
 <style lnag="scss">
 @import url('https://fonts.googleapis.com/css?family=Black+Han+Sans|Noto+Sans+KR:300,400&display=swap');
+
+* {
+  font-family:'Noto Sans KR';
+}
 
 html body {
   display: flex;
@@ -34,12 +63,13 @@ html body {
   background: rgb(244, 246, 252);
 }
 
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  width: 640px;
+  min-width: 640px;
   height: 440px;
   position: relative;
 }
@@ -81,6 +111,12 @@ html body {
   align-self: center;
   border-radius: 20px;
   height: 99.8%;
+}
+
+.update-text {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
 }
 
 </style>
