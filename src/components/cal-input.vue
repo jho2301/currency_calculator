@@ -49,9 +49,7 @@ export default {
      this.$store.commit('setproductPriceKrw', rawdata)
       return addComma(rawdata);
     },
-    
-    
-  },
+      },
 }
 </script>
 

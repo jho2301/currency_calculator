@@ -1,6 +1,8 @@
+
 import Vue from 'vue';
 import Vuex from 'vuex';
 import App from './App.vue';
+
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 import 'bootstrap'
@@ -12,6 +14,7 @@ import {store} from '@/store'
  
 Vue.use(VueAxios, axios)
 Vue.use(Vuex);
+
 library.add(faCalculator, faSortDown, faPlus)
  
 Vue.component('font-awesome-icon', FontAwesomeIcon)
