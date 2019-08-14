@@ -24,7 +24,6 @@ export default {
   },
   data(){
     return {
-      currencyRate: 0,
       updatedDate: ''
     }
   },
@@ -32,16 +31,15 @@ export default {
     getJSON : function(){ 
       this.axios.get('https://www.floatrates.com/daily/usd.json')
         .then((res)=>{
-          this.currencyRate = res.data["krw"].rate //환율
+          this.$store.commit('setCurrencyRate',res.data["krw"].rate) //환율
           this.updatedDate = res.data["krw"].date //날짜
         })
         .catch((err)=>{
-          console.log(err)
+          throw err
         })
     },
   },
-  computed: {
-  },
+
   created(){
     this.getJSON();
   },
@@ -49,7 +47,7 @@ export default {
 </script>
 
 <style lnag="scss">
-@import url('https://fonts.googleapis.com/css?family=Black+Han+Sans|Noto+Sans+KR:300,400&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Black+Han+Sans|Noto+Sans+KR:300,400,700&display=swap');
 
 * {
   font-family:'Noto Sans KR';
