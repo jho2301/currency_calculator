@@ -5,7 +5,8 @@
       <span class="header-text-qty">수량</span> 
       <span class="header-text-krw">KRW</span>
     </div>
-    <div class="input-row">
+    <div v-for="(product, index) of products" :key="product.id" class="input-row">
+      <font-awesome-icon v-if="index===1" @click="removeList(index)" class="close-btn" icon="times-circle"></font-awesome-icon>
       <span class="symbol">$</span>
       <input type="text" class="foreign-currency-input" v-model="input">
       <input type="number" v-model="quantity" value="1" min="0" max="99" name="" class="quantity-input">
@@ -33,7 +34,10 @@ export default {
       input: '',
       quantity: 1,
       currencyRate: 0,
-      updatedDate: ''
+      updatedDate: '',
+      products: [
+        {id:0, price:0, qty:0, individualKrw:0}
+      ]
     }
   },
   props: {
