@@ -20,11 +20,31 @@ export default {
     vHeader,
     vInput,
     vResult,
-  }
+  },
+  data(){
+    return {
+      updatedDate: ''
+    }
+  },
+  methods: {
+    getJSON : function(){ 
+      this.axios.get('https://www.floatrates.com/daily/usd.json')
+        .then((res)=>{
+          this.$store.commit('setCurrencyRate',res.data["krw"].rate) //환율
+          this.updatedDate = res.data["krw"].date //날짜
+        })
+        .catch((err)=>{
+          throw err
+        })
+    },
+  },
+  created(){
+    this.getJSON();
+  },
 }
 </script>
 <style lnag="scss">
-@import url('https://fonts.googleapis.com/css?family=Black+Han+Sans|Noto+Sans+KR:300,400&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Black+Han+Sans|Noto+Sans+KR:300,400,700&display=swap');
 
 html body {
   display: flex;
