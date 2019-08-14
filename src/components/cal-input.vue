@@ -7,9 +7,9 @@
     </div>
     <div class="input-row">
       <span class="symbol">$</span>
-      <input type="text" class="foreign-currency-input" v-model="input">
+      <input type="text" class="foreign-currency-input" @input="setCost($event,'setProductPrice')">
       <input type="number" v-model="quantity" value="1" min="0" max="99" name="" class="quantity-input">
-      <span class="individual-krw">{{individualKrw}}원</span>
+      <span class="individual-krw">{{ productKrw }}원</span>
     </div>
     <div class="add-btn">
       <font-awesome-icon class="plus-text" icon="plus" /> <span class="plus-text"> 추가하기</span>
@@ -18,38 +18,38 @@
     <div class="fare-row">
       <span class="fare-text">배송료</span>
       <span class="symbol">$</span>
-      <input class="fare-input" type="text" name="" id="">
+      <input class="fare-input" type="text" @input="setCost($event,'setShippingCost')">
       <span class="fare-text">배대지 비용</span>
       <span class="symbol">$</span>
-      <input class="fare-input" type="text">
+      <input class="fare-input" type="text"  @input="setCost($event, 'setAgencyCost')" >
     </div>
   </div>
 </template>
 
 <script>
+import {addComma, purifyNum} from '@/common'
+
 export default {
   data(){
     return {
-      input: '',
       quantity: 1,
       currencyRate: 0,
       updatedDate: ''
     }
   },
-  props: {
-    rate: Number
-  },
   methods: {
-    addComma(num) {
-      var regexp = /\B(?=(\d{3})+(?!\d))/g;
-      return num.toString().replace(regexp, ',');
-    }
+    setCost(event, stateToSet) {
+      const purePrice = purifyNum(event.target.value);
+      this.$store.commit(stateToSet,purePrice*this.quantity);
+    },
   },
   computed: {
-    individualKrw(){
-      return this.addComma(Math.floor(this.input*this.rate*this.quantity));
-    }
-  },
+    productKrw() {
+      let rawdata = Math.floor(this.$store.state.productPrice*this.$store.state.currencyRate*this.quantity);
+     this.$store.commit('setproductPriceKrw', rawdata)
+      return addComma(rawdata);
+    },
+      },
 }
 </script>
 

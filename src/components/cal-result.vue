@@ -1,32 +1,65 @@
 <template>
   <div class="app">
     <div class="total-before">
-      <div>상품 총액</div>
-      <div>$1,240</div>
-      <div>12312312원</div>
+      <div class="title">상품 총액</div>
+      <div>{{ totalAfter||0 }} 원</div>
+      <div>( $ {{ totalBefore||0 }} )</div>
     </div>
     <hr>
     <div class="fare">
-      <div>배송비</div>
-      <div>1321321원</div>
-      <div>배대지 비용</div>
-      <div>123123원</div>
+      <div class="title">배송비</div>
+      <div>{{ shippingCost||0 }} 원</div>
+      <div class="title">배대지 비용</div>
+      <div>{{ agencyCost||0 }} 원</div>
     </div>
     <hr>
     <div class="total-after">
-      <div>총 비용</div>
-      <div>$1,240</div>
-      <div>12312312원</div>
+      <div class="title">총 비용</div>
+      <div>{{ ultimateTotalAfter||0 }} 원</div>
+      <div>( $ {{ ultimateTotalBefore||0 }} )</div>
     </div>
   </div>
 </template>
 
 <script>
+import {addComma} from '@/common'
+
 export default {
+  data() {
+    return {
+    }
+  },
+  computed: {
+    shippingCost() {
+      let calToKrw=this.$store.state.shippingCost*this.$store.state.currencyRate
+      calToKrw = Math.floor(calToKrw);
+      return addComma(calToKrw);
+    },
+    agencyCost() {
+      let calToKrw=this.$store.state.agencyCost*this.$store.state.currencyRate
+      calToKrw = Math.floor(calToKrw);
+      return addComma(calToKrw);
+    },
+    totalBefore() {
+      return this.$store.state.productPrice
+    },
+    totalAfter() {
+      return addComma(this.$store.state.productPriceKrw)
+    },
+    ultimateTotalBefore() {
+      return this.$store.state.productPrice+this.$store.state.shippingCost+this.$store.state.agencyCost
+    },
+    ultimateTotalAfter() {
+      const shippingCostKrw = this.$store.state.shippingCost *  this.$store.state.currencyRate
+      const agencyCostKrw = this.$store.state.agencyCost * this.$store.state.currencyRate
+      return addComma(Math.floor(this.$store.state.productPriceKrw + agencyCostKrw + shippingCostKrw));
+    }
+  }
 }
 </script>
 
 <style lang="css" scoped >
+
   .app {
     background: linear-gradient(180deg, rgba(240,240,240,1) 0%, rgba(255,255,255,1) 47%, rgba(255,255,255,1) 100%);
     padding: 14px 15px;
@@ -44,5 +77,10 @@ export default {
   hr {
     border: 0.6px solid rgb(206, 206, 206);
     width: 60%;
+  }
+
+  .title {
+    font-weight: 700;
+    margin-bottom: 4px;
   }
 </style>
