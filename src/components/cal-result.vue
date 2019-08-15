@@ -57,9 +57,7 @@ export default {
     },
     ultimateTotalAfter() {
       const totalFare = ((+this.$store.state.agencyCost) + (+this.$store.state.shippingCost)) * this.$store.state.currencyRate;
-      const totalProduct = this.$store.state.productPriceKrw.reduce(
-        (acc, cur) => acc + cur
-      );
+      const totalProduct = this.$store.state.productPriceKrw.reduce( (acc, cur) => acc + cur );
       return addComma(~~totalFare + ~~totalProduct);
     }
   }
