@@ -2,7 +2,7 @@
   <div id="app">
     <v-header class="header col-12"></v-header>
     <div class="section">
-      <v-input class="input col-9" :rate="currencyRate"></v-input>
+      <v-input class="input col-9"></v-input>
       <v-result class="result col-3"></v-result>
     </div>
     <div class="highlight">
@@ -32,7 +32,11 @@ export default {
       this.axios.get('https://www.floatrates.com/daily/usd.json')
         .then((res)=>{
           this.$store.commit('setCurrencyRate',res.data["krw"].rate) //환율
-          this.updatedDate = res.data["krw"].date //날짜
+          let date = res.data["krw"].date //날짜
+
+          let tempArr = date.split(' ')
+          date = ` ${ tempArr[1] }  ${ tempArr[2] }, ${ tempArr[3] }`
+          this.updatedDate = date;
         })
         .catch((err)=>{
           throw err
