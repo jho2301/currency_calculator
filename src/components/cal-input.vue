@@ -14,7 +14,7 @@
         <span class="individual-krw">{{ priceKrw[arrNum-1] }}원</span>
       </div>
     </transition-group>
-      <div class="add-btn" @click="addList">
+      <div class="add-btn" v-show="max!==5" @click="addList">
         <font-awesome-icon class="plus-text" icon="plus" /> <span class="plus-text"> 추가하기</span>
       </div>
     <div class="borderline"></div>
