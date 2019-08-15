@@ -4,5 +4,5 @@ export const addComma = function(num) {
 };
 
 export const purifyNum = function(string) {
-  return ~~string.replace(/[^0-9]/g, "");
+  return string.replace(/[^0-9\\.]/g, "");
 };

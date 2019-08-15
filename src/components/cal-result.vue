@@ -30,15 +30,13 @@ export default {
   },
   computed: {
     shippingCost() {
-      let calToKrw =
-        this.$store.state.shippingCost * this.$store.state.currencyRate;
-      calToKrw = Math.floor(calToKrw);
+      let calToKrw = this.$store.state.shippingCost * this.$store.state.currencyRate;
+      calToKrw = ~~calToKrw;
       return addComma(calToKrw);
     },
     agencyCost() {
-      let calToKrw =
-        this.$store.state.agencyCost * this.$store.state.currencyRate;
-      calToKrw = Math.floor(calToKrw);
+      let calToKrw = this.$store.state.agencyCost * this.$store.state.currencyRate;
+      calToKrw = ~~calToKrw;
       return addComma(calToKrw);
     },
     totalBefore() {
@@ -60,9 +58,7 @@ export default {
       );
     },
     ultimateTotalAfter() {
-      const totalFare =
-        (this.$store.state.agencyCost + this.$store.state.shippingCost) *
-        this.$store.state.currencyRate;
+      const totalFare = (this.$store.state.agencyCost + this.$store.state.shippingCost) * this.$store.state.currencyRate;
       const totalProduct = this.$store.state.productPriceKrw.reduce(
         (acc, cur) => acc + cur
       );

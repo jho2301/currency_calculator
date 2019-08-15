@@ -9,7 +9,7 @@
       <div v-for="arrNum of max" :key="arrNum" class="input-row">
         <font-awesome-icon
           @click="removeList(arrNum)"
-          v-if="arrNum !== 1"
+          v-if=" max !== 1"
           class="close-btn"
           icon="times-circle"
         ></font-awesome-icon>
