@@ -75,7 +75,7 @@ export default {
   }
 
   hr {
-    border: 0.6px solid rgb(206, 206, 206);
+    border: 0.5px solid rgb(206, 206, 206);
     width: 60%;
   }
 

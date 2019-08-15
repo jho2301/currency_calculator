@@ -103,6 +103,7 @@ export default {
     text-align: right;
     line-height: 10px;
     padding-right: 10px;
+    color: rgb(36, 36, 36);
     &:focus {
       outline:none;
     }
@@ -134,8 +135,10 @@ export default {
 
   .quantity-input {
     @extend .input;
+    padding-left: 14px;
     padding-right: 0;
     width: 50px;
+    text-align: center;
   }
 
   .individual-krw {
