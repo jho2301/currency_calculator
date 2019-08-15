@@ -5,56 +5,56 @@
       <v-input class="input col-9"></v-input>
       <v-result class="result col-3"></v-result>
     </div>
-    <div class="highlight">
-    </div>
+    <div class="highlight"></div>
     <div class="update-text">환율 업데이트 : {{updatedDate}}</div>
   </div>
 </template>
 
 <script>
-import vHeader from './components/cal-header.vue'
-import vInput from './components/cal-input.vue'
-import vResult from './components/cal-result.vue'
+import vHeader from "./components/cal-header.vue";
+import vInput from "./components/cal-input.vue";
+import vResult from "./components/cal-result.vue";
 
 export default {
   components: {
     vHeader,
     vInput,
-    vResult,
+    vResult
   },
-  data(){
+  data() {
     return {
-      updatedDate: ''
-    }
+      updatedDate: ""
+    };
   },
   methods: {
-    getJSON : function(){ 
-      this.axios.get('https://www.floatrates.com/daily/usd.json')
-        .then((res)=>{
-          this.$store.commit('setCurrencyRate',res.data["krw"].rate) //환율
-          let date = res.data["krw"].date //날짜
+    getJSON: function() {
+      this.axios
+        .get("https://www.floatrates.com/daily/usd.json")
+        .then(res => {
+          this.$store.commit("setCurrencyRate", res.data["krw"].rate); //환율
+          let date = res.data["krw"].date; //날짜
 
-          let tempArr = date.split(' ')
-          date = ` ${ tempArr[1] }  ${ tempArr[2] }, ${ tempArr[3] }`
+          let tempArr = date.split(" ");
+          date = ` ${tempArr[1]}  ${tempArr[2]}, ${tempArr[3]}`;
           this.updatedDate = date;
         })
-        .catch((err)=>{
-          throw err
-        })
-    },
+        .catch(err => {
+          throw err;
+        });
+    }
   },
 
-  created(){
+  created() {
     this.getJSON();
-  },
-}
+  }
+};
 </script>
 
 <style lnag="scss">
-@import url('https://fonts.googleapis.com/css?family=Black+Han+Sans|Noto+Sans+KR:300,400,700&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Black+Han+Sans|Noto+Sans+KR:300,400,700&display=swap");
 
 * {
-  font-family:'Noto Sans KR';
+  font-family: "Noto Sans KR";
 }
 
 html body {
@@ -65,9 +65,8 @@ html body {
   background: rgb(244, 246, 252);
 }
 
-
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
@@ -79,10 +78,10 @@ html body {
 .highlight {
   box-shadow: inset 0 2px 2px rgba(255, 238, 238, 0.315);
   width: 100%;
-  height: 50px; 
+  height: 50px;
   z-index: 100;
   position: absolute;
-  top:44px;
+  top: 44px;
   border-radius: 20px;
 }
 
@@ -93,7 +92,7 @@ html body {
   align-content: flex-start;
   width: 100%;
   height: 90%;
-  border:5px solid  rgb(67, 92, 109);
+  border: 5px solid rgb(67, 92, 109);
   background: rgb(67, 92, 109);
   border-radius: 20px;
   box-shadow: 0 8px 10px rgba(75, 72, 117, 0.37);
@@ -106,7 +105,6 @@ html body {
 .input {
   border-radius: 15px 0 0 15px;
   height: 100%;
-
 }
 
 .result {
@@ -120,5 +118,4 @@ html body {
   bottom: 10px;
   right: 10px;
 }
-
 </style>
