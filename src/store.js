@@ -29,9 +29,11 @@ export const store = new Vuex.Store({
     },
     splicePrice(state, arrNum) {
       state.productPrice.splice(arrNum - 1, 1);
+      state.productPrice.push(0);
     },
     splicePriceKrw(state, arrNum) {
       state.productPriceKrw.splice(arrNum - 1, 1);
+      state.productPriceKrw.push(0)
     }
   }
 });
