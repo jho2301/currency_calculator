@@ -48,13 +48,12 @@ export default {
       return addComma(this.$store.state.productPriceKrw.reduce((acc, cur)=> acc + cur));
     },
     ultimateTotalBefore() {
-      return +this.totalBefore + this.$store.state.shippingCost +this.$store.state.agencyCost
+      return this.$store.state.productPrice.reduce((acc, cur)=> acc + cur) + this.$store.state.shippingCost + this.$store.state.agencyCost
     },
     ultimateTotalAfter() {
       const totalFare =  (this.$store.state.agencyCost + this.$store.state.shippingCost) *  this.$store.state.currencyRate
       const totalProduct = this.$store.state.productPriceKrw.reduce((acc, cur)=> acc + cur)
-      return addComma(Math.floor( +totalFare + totalProduct));
-      // this.$store.state.productPriceKrw
+      return addComma(~~totalFare + ~~totalProduct);
     }
   }
 }

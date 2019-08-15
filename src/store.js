@@ -6,8 +6,8 @@ Vue.use(Vuex)
 
  export const store = new Vuex.Store({
   state: {
-    productPrice: [0],
-    productPriceKrw :[0],
+    productPrice: [0,0,0,0,0],
+    productPriceKrw :[0,0,0,0,0],
     shippingCost: 0,
     agencyCost: 0,
     currencyRate: 0
