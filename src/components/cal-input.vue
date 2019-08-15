@@ -35,7 +35,7 @@
     </transition-group>
     <div class="add-btn" v-show="max!==7" @click="addList">
       <font-awesome-icon class="plus-text" icon="plus" />
-      <span class="plus-text">추가하기</span>
+      <span class="plus-text">&nbsp;&nbsp;추가하기</span>
     </div>
     <div class="borderline"></div>
     <div class="fare-row">
