@@ -92,6 +92,7 @@ export default {
     removeList(arrNum) {
       if (this.max > 1) {
         this.insertedPrice.splice(arrNum - 1, 1);
+        this.insertedPrice.push(0);
         this.quantity.splice(arrNum - 1, 1);
         this.quantity.push(1);
         this.priceKrw.splice(arrNum - 1, 1);
