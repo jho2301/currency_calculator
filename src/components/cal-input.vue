@@ -33,7 +33,7 @@
         <span class="individual-krw">{{ priceKrw[arrNum-1] }}원</span>
       </div>
     </transition-group>
-    <div class="add-btn" v-show="max!==5" @click="addList">
+    <div class="add-btn" v-show="max!==7" @click="addList">
       <font-awesome-icon class="plus-text" icon="plus" />
       <span class="plus-text">추가하기</span>
     </div>
@@ -56,9 +56,9 @@ export default {
   data() {
     return {
       max: 1,
-      insertedPrice: ["", "", "", "", ""],
-      quantity: [1, 1, 1, 1, 1],
-      priceKrw: [0, 0, 0, 0, 0],
+      insertedPrice: ["", "", "", "", "", "", ""],
+      quantity: [1, 1, 1, 1, 1, 1, 1],
+      priceKrw: [0, 0, 0, 0, 0, 0, 0],
       currencyRate: 0,
       updatedDate: ""
     };
@@ -85,7 +85,7 @@ export default {
       this.priceKrw.splice(arrNum - 1, 1, data);
     },
     addList() {
-      if (this.max < 5) {
+      if (this.max < 7) {
         this.max++;
       }
     },
@@ -233,7 +233,7 @@ export default {
   text-align: center;
   align-self: center;
   width: 76%;
-  margin-top: 20px;
+  margin-top: 8px;
   cursor: pointer;
   &:hover {
     background: rgb(119, 143, 216);
