@@ -52,9 +52,7 @@ export default {
     },
     ultimateTotalBefore() {
       return (
-        this.$store.state.productPrice.reduce((acc, cur) => acc + cur) +
-        this.$store.state.shippingCost +
-        this.$store.state.agencyCost
+        this.$store.state.productPrice.reduce((acc, cur) => acc + cur) + (+this.$store.state.shippingCost) + (+this.$store.state.agencyCost)
       );
     },
     ultimateTotalAfter() {
