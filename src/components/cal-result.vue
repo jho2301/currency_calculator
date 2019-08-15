@@ -2,21 +2,21 @@
   <div class="app">
     <div class="total-before">
       <div class="title">상품 총액</div>
-      <div>{{ totalAfter||0 }} 원</div>
+      <div>{{ totalAfter || 0 }} 원</div>
       <div>( $ {{ totalBefore||0 }} )</div>
     </div>
     <hr>
     <div class="fare">
       <div class="title">배송비</div>
-      <div>{{ shippingCost||0 }} 원</div>
+      <div>{{ shippingCost || 0 }} 원</div>
       <div class="title">배대지 비용</div>
-      <div>{{ agencyCost||0 }} 원</div>
+      <div>{{ agencyCost || 0 }} 원</div>
     </div>
     <hr>
     <div class="total-after">
       <div class="title">총 비용</div>
-      <div>{{ ultimateTotalAfter||0 }} 원</div>
-      <div>( $ {{ ultimateTotalBefore||0 }} )</div>
+      <div>{{ ultimateTotalAfter || 0 }} 원</div>
+      <div>( $ {{ ultimateTotalBefore || 0 }} )</div>
     </div>
   </div>
 </template>
@@ -31,28 +31,30 @@ export default {
   },
   computed: {
     shippingCost() {
-      let calToKrw=this.$store.state.shippingCost*this.$store.state.currencyRate
+      let calToKrw=this.$store.state.shippingCost * this.$store.state.currencyRate;
       calToKrw = Math.floor(calToKrw);
       return addComma(calToKrw);
     },
     agencyCost() {
-      let calToKrw=this.$store.state.agencyCost*this.$store.state.currencyRate
+      let calToKrw=this.$store.state.agencyCost * this.$store.state.currencyRate;
       calToKrw = Math.floor(calToKrw);
       return addComma(calToKrw);
     },
     totalBefore() {
-      return this.$store.state.productPrice
+      let totalTemp = this.$store.state.productPrice.reduce((acc, cur)=> acc + cur)
+      return addComma(totalTemp);
     },
     totalAfter() {
-      return addComma(this.$store.state.productPriceKrw)
+      return addComma(this.$store.state.productPriceKrw.reduce((acc, cur)=> acc + cur));
     },
     ultimateTotalBefore() {
-      return this.$store.state.productPrice+this.$store.state.shippingCost+this.$store.state.agencyCost
+      return +this.totalBefore + this.$store.state.shippingCost +this.$store.state.agencyCost
     },
     ultimateTotalAfter() {
-      const shippingCostKrw = this.$store.state.shippingCost *  this.$store.state.currencyRate
-      const agencyCostKrw = this.$store.state.agencyCost * this.$store.state.currencyRate
-      return addComma(Math.floor(this.$store.state.productPriceKrw + agencyCostKrw + shippingCostKrw));
+      const totalFare =  (this.$store.state.agencyCost + this.$store.state.shippingCost) *  this.$store.state.currencyRate
+      const totalProduct = this.$store.state.productPriceKrw.reduce((acc, cur)=> acc + cur)
+      return addComma(Math.floor( +totalFare + totalProduct));
+      // this.$store.state.productPriceKrw
     }
   }
 }

@@ -5,23 +5,26 @@
       <span class="header-text-qty">수량</span> 
       <span class="header-text-krw">KRW</span>
     </div>
-    <div class="input-row">
-      <span class="symbol">$</span>
-      <input type="text" class="foreign-currency-input" @input="setCost($event,'setProductPrice')">
-      <input type="number" v-model="quantity" value="1" min="0" max="99" name="" class="quantity-input">
-      <span class="individual-krw">{{ productKrw }}원</span>
-    </div>
-    <div class="add-btn">
-      <font-awesome-icon class="plus-text" icon="plus" /> <span class="plus-text"> 추가하기</span>
-    </div>
+    <transition-group name="list">
+      <div v-for="arrNum of max" :key="arrNum" class="input-row">
+        <font-awesome-icon  @click="removeList(arrNum)" v-if="arrNum !== 1" class="close-btn" icon="times-circle"></font-awesome-icon>
+        <span class="symbol">$</span>
+        <input type="text" class="foreign-currency-input" v-model="insertedPrice[arrNum-1]" @input="setCost(arrNum, quantity[arrNum-1], insertedPrice[arrNum-1],'setProductPrice')">
+        <input type="number" v-model="quantity[arrNum-1]"  @input="setCost(arrNum, quantity[arrNum-1], insertedPrice[arrNum-1],'setProductPrice')" value="1" min="0" max="99" name="" class="quantity-input">
+        <span class="individual-krw">{{ priceKrw[arrNum-1] }}원</span>
+      </div>
+    </transition-group>
+      <div class="add-btn" @click="addList">
+        <font-awesome-icon class="plus-text" icon="plus" /> <span class="plus-text"> 추가하기</span>
+      </div>
     <div class="borderline"></div>
     <div class="fare-row">
       <span class="fare-text">배송료</span>
       <span class="symbol">$</span>
-      <input class="fare-input" type="text" @input="setCost($event,'setShippingCost')">
+      <input class="fare-input" type="text" @input="setShippingCost($event,'setShippingCost')">
       <span class="fare-text">배대지 비용</span>
       <span class="symbol">$</span>
-      <input class="fare-input" type="text"  @input="setCost($event, 'setAgencyCost')" >
+      <input class="fare-input" type="text"  @input="setShippingCost($event, 'setAgencyCost')" >
     </div>
   </div>
 </template>
@@ -32,23 +35,53 @@ import {addComma, purifyNum} from '@/common'
 export default {
   data(){
     return {
-      quantity: 1,
+      max:1,
+      insertedPrice: ['','','','',''],
+      quantity: [1,1,1,1,1],
+      priceKrw: [0,0,0,0,0],
       currencyRate: 0,
-      updatedDate: ''
+      updatedDate: '',
     }
   },
   methods: {
-    setCost(event, stateToSet) {
-      const purePrice = purifyNum(event.target.value);
-      this.$store.commit(stateToSet,purePrice*this.quantity);
+     setCost(arrNum, qty, price, stateToSet) {
+      const purePrice = purifyNum(price);
+      const multipliedPrice = purePrice * qty
+      this.$store.commit(stateToSet, {arrNum, multipliedPrice});
+
+      this.setCostKrw(arrNum);
     },
+    setShippingCost(event, stateToSet) {
+      const purePrice = purifyNum(event.target.value);
+      this.$store.commit(stateToSet, purePrice);
+    },
+    setCostKrw(arrNum) {
+      let data = Math.floor(this.$store.state.productPrice[arrNum-1] * this.$store.state.currencyRate);
+      this.$store.commit('setproductPriceKrw', {arrNum, data})
+      data = addComma(data);
+      this.priceKrw.splice(arrNum-1, 1, data);
+    },
+    addList() {
+      if(this.max < 5) {
+        this.max++
+      }
+    },
+    removeList(arrNum) {
+      if(this.max > 1) {
+        this.insertedPrice.splice(arrNum-1,1);
+        this.quantity.splice(arrNum-1,1);
+        this.quantity.push(1);
+        this.priceKrw.splice(arrNum-1,1);
+        this.priceKrw.push(0);
+        this.$store.commit('splicePrice', arrNum);
+        this.$store.commit('splicePriceKrw', arrNum);
+        this.max--;
+      }
+      
+    }
   },
   computed: {
-    productKrw() {
-      let rawdata = Math.floor(this.$store.state.productPrice*this.$store.state.currencyRate*this.quantity);
-     this.$store.commit('setproductPriceKrw', rawdata)
-      return addComma(rawdata);
-    },
+    
       },
 }
 </script>
@@ -113,6 +146,22 @@ export default {
     width:100%;
     height: 28px;
     display: flex;
+    margin-bottom: 10px;
+  }
+  
+  .list-enter, .list-leave-to {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+
+  .list-enter-active, .list-leave-active {
+    transition: all, 0.7s ease;
+  }
+
+  .close-btn {
+    color : rgb(238, 165, 180);
+    position: absolute;
+    margin-top: 6px;
   }
 
   .symbol{
@@ -221,6 +270,8 @@ export default {
     @extend .input;
     width: 94px;
   }
+
+
 
 
 </style>
